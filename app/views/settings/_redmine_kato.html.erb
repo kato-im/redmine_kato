@@ -1,0 +1,13 @@
+<p>
+  <%= content_tag(:label, l(:kato_settings_label_url)) %>
+  <%= text_field_tag 'settings[kato_url]', @settings[:kato_url], :style => 'width:95%' %>
+</p>
+
+<p>
+ <a href="https://kato.im" target="_blank">Kato</a> webhook URL from your room integrations panel.
+</p>
+
+<p>
+  <%= content_tag(:label, l(:kato_settings_label_projects)) %>
+  <%= select_tag 'settings[projects][]', project_tree_options_for_select(Project.active, :selected => Project.where(:id => @settings[:projects])), :multiple => true, :size => Project.active.size, :style => 'min-width: 50%;' %>
+</p>
