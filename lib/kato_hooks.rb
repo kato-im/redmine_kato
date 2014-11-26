@@ -63,7 +63,7 @@ class NotificationHook < Redmine::Hook::Listener
   def send_message(kato_url, message)
     begin
       room = Kato::Room.new("", {:full_url => kato_url})
-      room.post("Redmine", message, {:renderer => "markdown"})
+      room.post("Redmine", message, {:renderer => "default"})
     rescue => e
       Rails.logger.error "Error when trying to send message to kato: #{e.message}"
     end
