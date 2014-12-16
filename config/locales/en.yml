@@ -2,4 +2,5 @@ en:
   kato_settings_header: Kato Plugin Configuration
   kato_settings_label_url: Kato webhook URL
   kato_settings_label_projects: Projects
+  field_kato_uses_markdown: Use Markdown format in Kato messages
   field_kato_url: Kato webhook URL

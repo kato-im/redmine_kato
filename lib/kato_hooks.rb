@@ -14,7 +14,7 @@ class NotificationHook < Redmine::Hook::Listener
     project = issue.project
     tracker = issue.tracker.name.downcase
     message = "#{user.name} created issue ##{issue.id} (#{tracker}) [#{issue.subject}](#{Setting[:protocol]}://#{Setting.host_name}/issues/#{issue.id}) at [#{project.name}](#{Setting[:protocol]}://#{Setting.host_name}/projects/#{project.name}).\n\nAssigned to: #{assigned}"
-    send_message(kato_url(project), message)
+    send_message(kato_url(project), project.kato_uses_markdown, message)
   end
 
   def controller_issues_edit_after_save(context = { })
@@ -27,7 +27,7 @@ class NotificationHook < Redmine::Hook::Listener
     notes = journal.notes
     tracker = issue.tracker.name.downcase
     message = "#{journal.user} edited issue ##{issue.id} (#{tracker}) [#{issue.subject}](#{Setting[:protocol]}://#{Setting.host_name}/issues/#{issue.id}) at [#{project.name}](#{Setting[:protocol]}://#{Setting.host_name}/projects/#{project.name})\n\n#{truncate_words(notes)}"
-    send_message(kato_url(project), message)
+    send_message(kato_url(project), project.kato_uses_markdown, message)
   end
 
   def controller_wiki_edit_after_save(context = {})
@@ -39,7 +39,7 @@ class NotificationHook < Redmine::Hook::Listener
     author = User.current.name
     url = "#{Setting[:protocol]}://#{Setting[:host_name]}/projects/#{page.wiki.project.identifier}/wiki/#{page.title}"
     message = "#{author} edited [#{project.name}](#{Setting[:protocol]}://#{Setting.host_name}/projects/#{project.name}) wiki page [#{wiki}](#{url})"
-    send_message(kato_url(project), message)
+    send_message(kato_url(project), project.kato_uses_markdown, message)
   end
 
   def kato_url(project)
@@ -60,10 +60,11 @@ class NotificationHook < Redmine::Hook::Listener
     false
   end
 
-  def send_message(kato_url, message)
+  def send_message(kato_url, uses_markdown, message)
+    renderer = uses_markdown ? "markdown" : "default"
     begin
       room = Kato::Room.new("", {:full_url => kato_url})
-      room.post("Redmine", message, {:renderer => "default"})
+      room.post("Redmine", message, {:renderer => renderer})
     rescue => e
       Rails.logger.error "Error when trying to send message to kato: #{e.message}"
     end
