@@ -1,5 +1,5 @@
 <p>
   <%= form.text_field :kato_url, :size => 60 %>
   <a href="https://kato.im" target="_blank">Kato</a> webhook URL from your room integrations panel. Leave empty to use <%= link_to 'global settings', plugin_settings_path(:redmine_kato) %>.<br />
-  <%= form.check_box :kato_uses_markdown, {}, 1, 0 %>
+  <%= form.check_box :kato_uses_markdown %>
 </p>
