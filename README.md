@@ -9,7 +9,7 @@ Installation
 
 ###### 1 .Install kato-rb gem:
 
-add `gem kato-rb` to your Gemfile and run
+add `gem 'kato-rb'` to your Gemfile and run
 
     bundle install
 
